@@ -92,7 +92,7 @@ public class H2Database extends Database<H2Connection> {
     protected MigrationVersion determineVersion() {
         try {
             int buildId = getMainConnection().getJdbcTemplate().queryForInt(
-                    "SELECT VALUE FROM INFORMATION_SCHEMA.SETTINGS WHERE NAME = 'info.BUILD_ID'");
+                    "SELECT `VALUE` FROM INFORMATION_SCHEMA.SETTINGS WHERE NAME = 'info.BUILD_ID'");
             return MigrationVersion.fromVersion(super.determineVersion().getVersion() + "." + buildId);
         } catch (SQLException e) {
             throw new FlywaySqlException("Unable to determine H2 build ID", e);
@@ -102,7 +102,7 @@ public class H2Database extends Database<H2Connection> {
     private CompatibilityMode determineCompatibilityMode() {
         try {
             String mode = getMainConnection().getJdbcTemplate().queryForString(
-                    "SELECT VALUE FROM INFORMATION_SCHEMA.SETTINGS WHERE NAME = 'MODE'");
+                    "SELECT `VALUE` FROM INFORMATION_SCHEMA.SETTINGS WHERE NAME = 'MODE'");
             if (mode == null || "".equals(mode))
                 return CompatibilityMode.REGULAR;
             return CompatibilityMode.valueOf(mode);
